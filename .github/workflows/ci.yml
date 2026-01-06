@@ -1,39 +1,38 @@
-name: Django CI/CD Pipeline
+name: CI-CD Pipeline
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
-  build-test:
+  ci:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10
 
-    - name: Install dependencies
-      run: |
-        pip install django
+      - name: Install dependencies
+        run: pip install -r requirements.txt
 
-    - name: Run tests
-      run: |
-        python manage.py test
+      - name: Run tests
+        run: python manage.py test
 
-  deploy:
-    needs: build-test
+  cd:
+    needs: ci
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Deployment simulation
-      run: |
-        echo "Deploying application using Docker Compose"
-        echo "docker-compose up -d --build"
+      - name: Deploy to Azure VM
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.AZURE_HOST }}
+          username: ${{ secrets.AZURE_USER }}
+          key: ${{ secrets.AZURE_SSH_KEY }}
+          script: |
+            cd ~/student-management-cicd
+            git pull origin main
+            docker-compose down
+            docker-compose up --build -d
