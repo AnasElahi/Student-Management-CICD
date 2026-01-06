@@ -29,7 +29,7 @@ jobs:
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.AZURE_HOST }}
-        username: lemon
+        username: ${{ secrets.AZURE_USER }}
         key: ${{ secrets.AZURE_SSH_KEY }}
         script: |
           cd student-management-cicd
