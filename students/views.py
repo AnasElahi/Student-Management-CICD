@@ -1,6 +1,6 @@
 from django.shortcuts import render
-
+from django.http import HttpResponse
 # Create your views here.
 
 def homepage(request):
-    return HttpResponse("<h1>vgvfghewvfewgvf</h1>")
+    return HttpResponse("<h1>Hello Cloud World</h1>")
