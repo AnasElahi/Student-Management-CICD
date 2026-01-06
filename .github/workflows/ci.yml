@@ -32,7 +32,7 @@ jobs:
         username: ${{ secrets.AZURE_USER }}
         key: ${{ secrets.AZURE_SSH_KEY }}
         script: |
-          cd student-management-cicd
+          cd Student-Management-CICD
           git pull origin main
           docker-compose down
           docker-compose up --build -d
