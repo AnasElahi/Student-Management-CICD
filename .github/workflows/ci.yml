@@ -25,14 +25,15 @@ jobs:
     needs: ci
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to Azure VM
-        uses: appleboy/ssh-action@v0.1.6
-        with:
-          host: ${{ secrets.AZURE_HOST }}
-          username: ${{ secrets.AZURE_USER }}
-          key: ${{ secrets.AZURE_SSH_KEY }}
-          script: |
-            cd ~/student-management-cicd
-            git pull origin main
-            docker-compose down
-            docker-compose up --build -d
+    - name: Deploy to Azure VM
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.AZURE_HOST }}
+        username: ${{ secrets.AZURE_USER }}
+        key: ${{ secrets.AZURE_SSH_KEY }}
+        script: |
+          cd student-management-cicd
+          git pull origin main
+          docker-compose down
+          docker-compose up --build -d
+
